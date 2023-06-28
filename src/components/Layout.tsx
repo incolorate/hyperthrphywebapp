@@ -1,13 +1,10 @@
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { profile } from "console";
 
 export default function Layout({ children }: any) {
   const user = useUser();
   const router = useRouter();
-  console.log(router);
-
   const inactive = "text-xl ";
   const active = inactive + "text-yellow-600";
 
@@ -22,7 +19,7 @@ export default function Layout({ children }: any) {
         <div className="flex justify-between">
           <button>
             <Link
-              href="/dashboard/profile"
+              href="/profile"
               className={
                 router.pathname.includes("profile") ? active : inactive
               }
@@ -32,19 +29,19 @@ export default function Layout({ children }: any) {
           </button>
 
           <Link
-            href="/dashboard/history"
+            href="/history"
             className={router.pathname.includes("history") ? active : inactive}
           >
             History
           </Link>
           <Link
-            href="/dashboard/workout"
+            href="/workout"
             className={router.pathname.includes("workout") ? active : inactive}
           >
             Workout
           </Link>
           <Link
-            href="/dashboard/measure"
+            href="/measure"
             className={router.pathname.includes("measure") ? active : inactive}
           >
             Measure
