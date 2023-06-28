@@ -2,9 +2,11 @@ import Head from "next/head";
 import { GiProgression } from "react-icons/gi";
 import placeholder from "../images/placeholder-image.png";
 import Image from "next/image";
-import { SignIn } from "@clerk/nextjs";
+import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 
 export default function Home() {
+  const user = useUser();
+
   return (
     <>
       <Head>
@@ -70,7 +72,8 @@ export default function Home() {
           </div>
         </div>
         <div>
-          <SignIn />
+          {!user.isSignedIn && <SignInButton />}
+          {!!user.isSignedIn && <SignOutButton />}
         </div>
       </main>
       <footer className="bg-zinc-950 p-2 text-center font-mono text-sm text-zinc-100">
