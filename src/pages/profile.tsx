@@ -4,7 +4,6 @@ import Image from "next/image";
 
 export default function Profile() {
   const user = useUser();
-  console.log(user.user?.imageUrl);
   return (
     <Layout>
       <div>
