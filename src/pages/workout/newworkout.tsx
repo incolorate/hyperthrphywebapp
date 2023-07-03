@@ -8,9 +8,12 @@ export default function NewWorkout() {
   const [selectedExercise, setSelectedExercise] = useState<string[]>([]);
   const [currentWorkout, setCurrentWorkout] = useState<object[]>([]);
 
+  const { data: latestWorkout } = api.exercises.findLatest.useQuery();
+
   const handleModal = () => {
     setShowExerciseModal((prev) => !prev);
   };
+
   // Get the list of exercises from db
   const { data: exerciseObjectArray } = api.exercises.getAll.useQuery();
 
@@ -59,6 +62,7 @@ export default function NewWorkout() {
                   name={exerciseObject?.name}
                   id={exerciseObject?.id}
                   description={exerciseObject.description}
+                  workoutId={latestWorkout?.id}
                 />
               </div>
             );

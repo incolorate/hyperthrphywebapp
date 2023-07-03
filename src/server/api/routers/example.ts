@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { clerkClient } from "@clerk/nextjs/server";
+import { Input } from "postcss";
 
 export const exercisesRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -28,4 +29,35 @@ export const exercisesRouter = createTRPCRouter({
     });
     return workout;
   }),
+  findLatest: publicProcedure.query(({ ctx }) => {
+    const userId = ctx.userId || undefined;
+    return ctx.prisma.workout.findFirst({
+      orderBy: {
+        id: "desc",
+      },
+      where: {
+        userId,
+      },
+    });
+  }),
+  createSet: publicProcedure
+    .input(
+      z.object({
+        workoutId: z.number(),
+        exerciseId: z.string(),
+        weight: z.number(),
+        repetitions: z.number(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      const set = ctx.prisma.set.create({
+        data: {
+          workout: { connect: { id: input.workoutId } },
+          exercise: { connect: { id: input.exerciseId } },
+          weight: input.weight,
+          repetitions: input.repetitions,
+        },
+      });
+      return set;
+    }),
 });

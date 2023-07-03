@@ -6,14 +6,22 @@ interface CardInformation {
   name: string;
   id: string;
   description: string;
+  workoutId: number;
 }
 
-export function Exercise({ name, id, description }: CardInformation) {
+export function Exercise({
+  name,
+  id,
+  description,
+  workoutId,
+}: CardInformation) {
   const [setNumber, setSetNumber] = useState<number[]>([]);
 
   const onAdd = () => {
     setSetNumber((prev) => [...prev, prev.length]);
   };
+
+  // Create set
 
   return (
     <div>
@@ -30,7 +38,14 @@ export function Exercise({ name, id, description }: CardInformation) {
         </thead>
         <tbody>
           {setNumber.map((set) => {
-            return <Set key={set} setNumber={set} />;
+            return (
+              <Set
+                key={set}
+                setNumber={set}
+                workoutId={workoutId}
+                exerciseId={id}
+              />
+            );
           })}
         </tbody>
       </table>
