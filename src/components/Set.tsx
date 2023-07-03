@@ -1,43 +1,66 @@
 import { useState } from "react";
-import { Exercise } from "./Exercise";
-import { api } from "~/utils/api";
 
-interface CardInformation {
-  name: string;
-  id: string;
-  description: string;
+interface Props {
+  setNumber: number;
 }
 
-export function Set({ name, id, description }: CardInformation) {
-  const [setNumber, setSetNumber] = useState<number[]>([]);
+interface FormData {
+  weight: number;
+  reps: number;
+}
+import { BsCheckSquareFill } from "react-icons/bs";
+import { BsCheckSquare } from "react-icons/bs";
 
-  const onAdd = () => {
-    setSetNumber((prev) => [...prev, prev.length]);
+export function Set({ setNumber }: Props) {
+  const [formData, setFormData] = useState<FormData>({ weight: 0, reps: 0 });
+  const [checked, setChecked] = useState(false);
+
+  const handleCheck = () => {
+    setChecked((prev) => !prev);
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   return (
-    <div>
-      <p className="text-2xl">{name}</p>
-      <table className="max-md w-full text-center">
-        <thead>
-          <tr>
-            <th>SET</th>
-            <th>PREVIOUS</th>
-            <th>KG</th>
-            <th>REPS</th>
-          </tr>
-        </thead>
-        <tbody>
-          {setNumber.map((set) => {
-            return <Exercise key={set} setNumber={set} />;
-          })}
-        </tbody>
-      </table>
-      <div className="max-md flex w-full justify-center">
-        <button className="text-blue-400" onClick={onAdd}>
-          Add set
+    <tr>
+      <td>{setNumber + 1}</td>
+      <td>12x12</td>
+      <td>
+        <label>
+          <input
+            type="number"
+            name="weight"
+            value={formData.weight}
+            onChange={handleInputChange}
+            required
+            className="w-16 rounded-md bg-zinc-200"
+          />
+        </label>
+      </td>
+      <td>
+        <label>
+          <input
+            type="number"
+            name="reps"
+            value={formData.reps}
+            onChange={handleInputChange}
+            required
+            className="w-16 rounded-md bg-zinc-200"
+          />
+        </label>
+      </td>
+      <td>
+        <button onClick={handleCheck}>
+          {checked ? (
+            <BsCheckSquareFill className="text-blue-400" />
+          ) : (
+            <BsCheckSquare />
+          )}
         </button>
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 }

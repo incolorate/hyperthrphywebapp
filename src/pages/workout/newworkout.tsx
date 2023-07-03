@@ -1,13 +1,23 @@
 import Layout from "~/components/Layout";
 import { api } from "~/utils/api";
-import { useState, useEffect, SetStateAction } from "react";
-import { Set } from "../../components/Set";
-import { object } from "zod";
+import { useEffect, useState } from "react";
+import { Exercise } from "../../components/Exercise";
 
 export default function NewWorkout() {
   const [showExerciseModal, setShowExerciseModal] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<string[]>([]);
   const [currentWorkout, setCurrentWorkout] = useState<object[]>([]);
+
+  const createWorkout = api.exercises.createWorkout.useMutation();
+
+  useEffect(() => {
+    createWorkout.mutate();
+  }, []);
+
+  if (createWorkout.isSuccess) {
+    const workoutData = createWorkout.data;
+    console.log(workoutData);
+  }
 
   const handleModal = () => {
     setShowExerciseModal((prev) => !prev);
@@ -55,7 +65,7 @@ export default function NewWorkout() {
           {currentWorkout.map((exerciseObject, index) => {
             return (
               <div key={index}>
-                <Set
+                <Exercise
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   name={exerciseObject?.name}
                   id={exerciseObject?.id}

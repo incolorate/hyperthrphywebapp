@@ -1,46 +1,44 @@
 import { useState } from "react";
+import { api } from "~/utils/api";
+import { Set } from "./Set";
 
-interface FormData {
-  weight: number;
-  reps: number;
+interface CardInformation {
+  name: string;
+  id: string;
+  description: string;
 }
 
-export function Exercise({ setNumber }) {
-  const [formData, setFormData] = useState<FormData>({ weight: 0, reps: 0 });
+export function Exercise({ name, id, description }: CardInformation) {
+  const [setNumber, setSetNumber] = useState<number[]>([]);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+  const onAdd = () => {
+    setSetNumber((prev) => [...prev, prev.length]);
   };
 
   return (
-    <tr>
-      <td>{setNumber + 1}</td>
-      <td>12x12</td>
-      <td>
-        <label>
-          <input
-            type="number"
-            name="weight"
-            value={formData.weight}
-            onChange={handleInputChange}
-            required
-            className="w-16 rounded-md bg-zinc-200"
-          />
-        </label>
-      </td>
-      <td>
-        <label>
-          <input
-            type="number"
-            name="reps"
-            value={formData.reps}
-            onChange={handleInputChange}
-            required
-            className="w-16 rounded-md bg-zinc-200"
-          />
-        </label>
-      </td>
-    </tr>
+    <div>
+      <p className="text-2xl">{name}</p>
+      <table className="max-md w-full text-center">
+        <thead>
+          <tr>
+            <th>SET</th>
+            <th>PREVIOUS</th>
+            <th>KG</th>
+            <th>REPS</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {setNumber.map((set) => {
+            return <Set key={set} setNumber={set} />;
+          })}
+        </tbody>
+      </table>
+      <div className="max-md flex w-full justify-center">
+        <button className="text-blue-400" onClick={onAdd}>
+          Add set
+        </button>
+      </div>
+    </div>
   );
 }
