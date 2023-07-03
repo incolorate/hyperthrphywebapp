@@ -8,17 +8,6 @@ export default function NewWorkout() {
   const [selectedExercise, setSelectedExercise] = useState<string[]>([]);
   const [currentWorkout, setCurrentWorkout] = useState<object[]>([]);
 
-  const createWorkout = api.exercises.createWorkout.useMutation();
-
-  useEffect(() => {
-    createWorkout.mutate();
-  }, []);
-
-  if (createWorkout.isSuccess) {
-    const workoutData = createWorkout.data;
-    console.log(workoutData);
-  }
-
   const handleModal = () => {
     setShowExerciseModal((prev) => !prev);
   };
