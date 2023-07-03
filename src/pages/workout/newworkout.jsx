@@ -1,6 +1,7 @@
 import Layout from "~/components/Layout";
 import { api } from "~/utils/api";
 import { useState } from "react";
+import { Set } from "../../components/Set";
 
 export default function NewWorkout() {
   const [showExercises, setShowExercises] = useState(false);
@@ -25,20 +26,25 @@ export default function NewWorkout() {
 
   // Handle save
   const onSave = () => {
-    setCurrentWorkout((prev) => [...prev, clicked]);
+    setCurrentWorkout((prev) => [...prev, ...clicked]);
     setShowExercises((prev) => !prev);
   };
+
+  console.log(currentWorkout);
 
   return (
     <Layout>
       {showExercises || (
         <>
-          <button onClick={showModal} className="rounded-md bg-yellow-500 p-2">
-            Add exercises
-          </button>
           <div>
-            <p>Current workout</p>
-            {currentWorkout}
+            <p className="p-2">Current workout</p>
+            {currentWorkout.map((exercise) => {
+              return (
+                <div className="p-2">
+                  <Set exerciseName={exercise} key={exercise} />;
+                </div>
+              );
+            })}
           </div>
         </>
       )}
@@ -65,6 +71,13 @@ export default function NewWorkout() {
               Close
             </button>
           </div>
+        )}
+      </div>
+      <div className="max-md flex justify-center">
+        {showExercises || (
+          <button onClick={showModal} className="rounded-md bg-yellow-500 p-2">
+            Add exercises
+          </button>
         )}
       </div>
     </Layout>

@@ -12,7 +12,41 @@ datasource db {
   relationMode = "prisma"
 }
 
+model User {
+  id        String      @id @default(cuid())
+  userId    String      @unique
+  workouts  Workout[]
+}
+
+
+model Workout {
+  id        Int      @id @default(autoincrement())
+  user      User    @relation(fields: [userId], references: [userId])
+  userId    String     
+  date      DateTime
+  duration  Int
+  notes     String?
+  sets      Set[]
+
+  @@index([userId])
+}
+
 model Exercise {
     id        String   @id @default(cuid())
-    name String
+    name      String
+    description String?
+    sets        Set[]
+}
+
+model Set {
+  id          Int       @id @default(autoincrement())
+  workoutId   Int
+  workout     Workout   @relation(fields: [workoutId], references: [id])
+  exercise    Exercise  @relation(fields: [exerciseId], references: [id])
+  exerciseId  String
+  weight      Float
+  repetitions Int
+
+  @@index([workoutId])
+  @@index([exerciseId])
 }
