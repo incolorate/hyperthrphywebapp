@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { number, string } from "zod";
 
 interface FormData {
   weight: number;

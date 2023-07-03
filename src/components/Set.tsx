@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Exercise } from "./Exercise";
+import { api } from "~/utils/api";
 
 interface CardInformation {
-  exerciseName: any;
+  name: string;
+  id: string;
+  description: string;
 }
 
-export function Set({ exerciseName }: CardInformation) {
-  const [setNumber, setSetNumber] = useState([]);
+export function Set({ name, id, description }: CardInformation) {
+  const [setNumber, setSetNumber] = useState<number[]>([]);
 
   const onAdd = () => {
     setSetNumber((prev) => [...prev, prev.length]);
@@ -14,7 +17,7 @@ export function Set({ exerciseName }: CardInformation) {
 
   return (
     <div>
-      <p className="text-2xl">{exerciseName}</p>
+      <p className="text-2xl">{name}</p>
       <table className="max-md w-full text-center">
         <thead>
           <tr>

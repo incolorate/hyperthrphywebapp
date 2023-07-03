@@ -7,6 +7,7 @@ import { object } from "zod";
 export default function NewWorkout() {
   const [showExerciseModal, setShowExerciseModal] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<string[]>([]);
+  const [currentWorkout, setCurrentWorkout] = useState<object[]>([]);
 
   const handleModal = () => {
     setShowExerciseModal((prev) => !prev);
@@ -23,7 +24,21 @@ export default function NewWorkout() {
     } else {
       setSelectedExercise((prev: string[]) => [...prev, exerciseName]);
     }
-    console.log(selectedExercise);
+  };
+
+  // Push selected exercises to currentWorkout exerciseObjectArray
+  const handleAddExercises = () => {
+    {
+      exerciseObjectArray?.map((object) => {
+        return selectedExercise.map((exercise) =>
+          exercise === object.name
+            ? setCurrentWorkout((prev: object[]) => [...prev, object])
+            : ""
+        );
+      });
+    }
+    handleModal();
+    setSelectedExercise([]);
   };
 
   return (
@@ -35,24 +50,51 @@ export default function NewWorkout() {
           <p>Current workout</p>
         )}
       </div>
-      <div className="max-md flex flex-col gap-1">
-        {showExerciseModal &&
-          exerciseObjectArray?.map((object, index) => {
+      {showExerciseModal || (
+        <div>
+          {currentWorkout.map((exerciseObject, index) => {
             return (
-              <div
-                key={index}
-                onClick={() => highLightExercise(object.name)}
-                className={
-                  selectedExercise.includes(object.name)
-                    ? "text-blue-400"
-                    : "text-black"
-                }
-              >
-                <p>{object.name}</p>
-                <p className="text-xs">{object.description}</p>
+              <div key={index}>
+                <Set
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  name={exerciseObject?.name}
+                  id={exerciseObject?.id}
+                  description={exerciseObject.description}
+                />
               </div>
             );
           })}
+        </div>
+      )}
+      <div className="max-md flex flex-col gap-1">
+        {showExerciseModal && (
+          <div>
+            {exerciseObjectArray?.map((object, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={() => highLightExercise(object.name)}
+                  className={
+                    selectedExercise.includes(object.name)
+                      ? "text-blue-400"
+                      : "text-black"
+                  }
+                >
+                  <p>{object.name}</p>
+                  <p className="text-xs">{object.description}</p>
+                </div>
+              );
+            })}
+            <div className="mt-2 flex flex-col justify-center gap-2">
+              <button className="text-blue-400" onClick={handleAddExercises}>
+                Add exercises
+              </button>
+              <button className="text-red-500" onClick={handleModal}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {showExerciseModal || (

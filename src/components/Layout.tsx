@@ -14,7 +14,7 @@ export default function Layout({ children }: any) {
 
   return (
     <>
-      <div className="mb-16">{children}</div>
+      <div className="mb-16 p-2">{children}</div>
       <nav className="fixed inset-x-0 bottom-0 z-10  block bg-white shadow">
         <div className="flex justify-between">
           <button>
