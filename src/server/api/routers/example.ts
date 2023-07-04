@@ -60,4 +60,13 @@ export const exercisesRouter = createTRPCRouter({
       });
       return set;
     }),
+  getWorkouts: publicProcedure.query(({ ctx }) => {
+    const userId = ctx.userId || undefined;
+    const getWorkouts = ctx.prisma.workout.findMany({
+      where: {
+        userId,
+      },
+    });
+    return getWorkouts;
+  }),
 });
