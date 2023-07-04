@@ -14,6 +14,17 @@ export const exercisesRouter = createTRPCRouter({
       where: {
         userId,
       },
+      include: {
+        workouts: {
+          include: {
+            sets: {
+              include: {
+                exercise: true,
+              },
+            },
+          },
+        },
+      },
     });
   }),
   createWorkout: publicProcedure.mutation(({ ctx }) => {
