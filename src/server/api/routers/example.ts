@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { number, z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { clerkClient } from "@clerk/nextjs/server";
 import { Input } from "postcss";
@@ -80,4 +80,21 @@ export const exercisesRouter = createTRPCRouter({
     });
     return getWorkouts;
   }),
+  findSpecificWorkout: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(({ ctx, input }) => {
+      const workoutInfo = ctx.prisma.workout.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          sets: {
+            include: {
+              exercise: true,
+            },
+          },
+        },
+      });
+      return workoutInfo;
+    }),
 });

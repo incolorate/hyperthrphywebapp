@@ -1,6 +1,7 @@
 import Layout from "../components/Layout";
 import Link from "next/link";
 import { api } from "~/utils/api";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 export default function Workout() {
   const createWorkout = api.exercises.createWorkout.useMutation();
@@ -18,6 +19,10 @@ export default function Workout() {
               Start new workout
             </button>
           </Link>
+        </div>
+        <div className="mt-1 flex justify-between text-sm">
+          <p>MY TEMPLATES</p>
+          <AiOutlinePlusCircle />
         </div>
       </div>
     </Layout>

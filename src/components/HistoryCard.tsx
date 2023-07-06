@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 import { set } from "zod";
+import Link from "next/link";
 
 interface Props {
   date: object;
   sets: object;
+  workoutId: number;
 }
 
-export default function HistoryCard({ date, sets }: Props) {
+export default function HistoryCard({ date, sets, workoutId }: Props) {
   const [count, setCount] = useState({});
   const [bestSet, setBestSet] = useState({});
+
   useEffect(() => {
     const exerciseCount = {};
 
@@ -19,9 +22,7 @@ export default function HistoryCard({ date, sets }: Props) {
         exerciseCount[set.exercise.name] = 1;
       }
     });
-
     const bestSetCount = {};
-
     sets.forEach((set) => {
       if (set.weight * set.repetitions > bestSetCount[set.exercise.name]) {
         bestSetCount[set.exercise.name] = set.weight * set.repetitions;
@@ -33,23 +34,26 @@ export default function HistoryCard({ date, sets }: Props) {
     });
     setBestSet(bestSetCount);
     setCount(exerciseCount);
-    console.log(bestSet);
   }, []);
 
   return (
-    <div className="mb-2 rounded-md border p-2 text-sm shadow-md">
-      <p>Workout name</p>
-      <div className="flex justify-between">
-        <p>Exercise</p>
-        <p>Best set</p>
+    <Link href={`history/${workoutId}`}>
+      <div className="mb-2 cursor-pointer rounded-md border p-2 text-sm shadow-md">
+        <div>
+          <p>Workout name</p>
+        </div>
+        <div className="flex justify-between">
+          <p>Exercise</p>
+          <p>Best set</p>
+        </div>
+        <div>
+          {Object.entries(count).map(([exercise, number]) => (
+            <p key={exercise}>
+              {number} X {exercise}
+            </p>
+          ))}
+        </div>
       </div>
-      <div>
-        {Object.entries(count).map(([exercise, number]) => (
-          <p key={exercise}>
-            {number} X {exercise}
-          </p>
-        ))}
-      </div>
-    </div>
+    </Link>
   );
 }
