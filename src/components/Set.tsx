@@ -5,6 +5,7 @@ interface Props {
   setNumber: number;
   workoutId: number;
   exerciseId: string;
+  previousRepetitions: number;
 }
 
 interface FormData {
@@ -15,8 +16,16 @@ import { BsCheckSquareFill } from "react-icons/bs";
 import { BsCheckSquare } from "react-icons/bs";
 import { api } from "~/utils/api";
 
-export function Set({ setNumber, workoutId, exerciseId }: Props) {
-  const [formData, setFormData] = useState<FormData>({ weight: 0, reps: 0 });
+export function Set({
+  setNumber,
+  workoutId,
+  exerciseId,
+  previousRepetitions,
+}: Props) {
+  const [formData, setFormData] = useState<FormData>({
+    weight: 0,
+    reps: 0 || previousRepetitions,
+  });
   const [checked, setChecked] = useState(false);
 
   const createSet = api.exercises.createSet.useMutation();

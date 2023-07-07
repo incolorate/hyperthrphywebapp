@@ -56,7 +56,7 @@ export default function NewWorkout() {
         <div>
           {currentWorkout.map((exerciseObject, index) => {
             return (
-              <div key={index}>
+              <div key={index - exerciseObject.id}>
                 <Exercise
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   name={exerciseObject?.name}
