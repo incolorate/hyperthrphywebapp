@@ -7,6 +7,7 @@ interface CardInformation {
   id: string;
   description: string;
   workoutId: number;
+  exerciseInfo: object[];
 }
 
 export function Exercise({
@@ -14,15 +15,8 @@ export function Exercise({
   id,
   description,
   workoutId,
+  exerciseInfo,
 }: CardInformation) {
-  const [setNumber, setSetNumber] = useState<number[]>([]);
-
-  const onAdd = () => {
-    setSetNumber((prev) => [...prev, prev.length]);
-  };
-
-  // Create set
-
   return (
     <div>
       <p className="text-2xl">{name}</p>
@@ -37,22 +31,21 @@ export function Exercise({
           </tr>
         </thead>
         <tbody>
-          {setNumber.map((set) => {
-            return (
-              <Set
-                key={set}
-                setNumber={set}
-                workoutId={workoutId}
-                exerciseId={id}
-              />
-            );
-          })}
+          {exerciseInfo.map((set, index) => (
+            <Set
+              key={set.id}
+              previousRepetitions={set.repetitions}
+              previousWeight={set.weight}
+              setNumber={index}
+              workoutId={set.workoutId}
+              exerciseId={set.exerciseId}
+              setId={set.id}
+            />
+          ))}
         </tbody>
       </table>
       <div className="max-md flex w-full justify-center">
-        <button className="text-blue-400" onClick={onAdd}>
-          Add set
-        </button>
+        <button className="text-blue-400">Add set</button>
       </div>
     </div>
   );

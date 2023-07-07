@@ -6,9 +6,15 @@ interface Props {
   date: object;
   sets: object;
   workoutId: number;
+  exerciseInfo: object[];
 }
 
-export default function HistoryCard({ date, sets, workoutId }: Props) {
+export default function HistoryCard({
+  date,
+  sets,
+  workoutId,
+  exerciseInfo,
+}: Props) {
   const [count, setCount] = useState({});
   const [bestSet, setBestSet] = useState({});
 

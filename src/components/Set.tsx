@@ -6,6 +6,8 @@ interface Props {
   workoutId: number;
   exerciseId: string;
   previousRepetitions: number;
+  previousWeight: number;
+  setId: number;
 }
 
 interface FormData {
@@ -21,14 +23,25 @@ export function Set({
   workoutId,
   exerciseId,
   previousRepetitions,
+  previousWeight,
+  setId,
 }: Props) {
   const [formData, setFormData] = useState<FormData>({
-    weight: 0,
-    reps: 0 || previousRepetitions,
+    weight: previousWeight || 0,
+    reps: previousRepetitions || 0,
   });
+
   const [checked, setChecked] = useState(false);
 
+  // If we access the component from the historycard -> set to checked
+  useState(() => {
+    if (previousRepetitions && previousWeight) {
+      setChecked(true);
+    }
+  });
+
   const createSet = api.exercises.createSet.useMutation();
+  const updateSet = api.exercises.editSet.useMutation();
 
   const handleCheck = () => {
     setChecked((prev) => !prev);
@@ -65,6 +78,7 @@ export function Set({
             onChange={handleInputChange}
             required
             className="w-16 rounded-md bg-zinc-200"
+            disabled={checked ? true : false}
           />
         </label>
       </td>
@@ -74,14 +88,22 @@ export function Set({
             <BsCheckSquareFill className="text-blue-400" />
           ) : (
             <BsCheckSquare
-              onClick={() =>
-                createSet.mutate({
-                  workoutId: workoutId,
-                  exerciseId: exerciseId,
-                  weight: Number(formData.weight),
-                  repetitions: Number(formData.reps),
-                })
-              }
+              onClick={() => {
+                if (previousRepetitions && previousWeight) {
+                  updateSet.mutate({
+                    id: setId,
+                    newWeight: Number(formData.weight),
+                    newRepetitions: Number(formData.reps),
+                  });
+                } else {
+                  createSet.mutate({
+                    workoutId: workoutId,
+                    exerciseId: exerciseId,
+                    weight: Number(formData.weight),
+                    repetitions: Number(formData.reps),
+                  });
+                }
+              }}
             />
           )}
         </button>

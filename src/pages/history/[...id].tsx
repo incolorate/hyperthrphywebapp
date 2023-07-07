@@ -45,8 +45,13 @@ export default function EditWorkout() {
         const exerciseInfo = setInfo?.filter(
           (exercise) => exercise.exercise.name === exerciseName
         );
-        console.log(exerciseInfo);
-        return <Exercise key={index} exerciseInfo={exerciseInfo} />;
+        return (
+          <Exercise
+            key={index}
+            name={exerciseName}
+            exerciseInfo={exerciseInfo}
+          />
+        );
       })}
     </Layout>
   );

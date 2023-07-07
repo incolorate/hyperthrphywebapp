@@ -97,4 +97,24 @@ export const exercisesRouter = createTRPCRouter({
       });
       return workoutInfo;
     }),
+  editSet: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        newWeight: z.number(),
+        newRepetitions: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const updateSet = await ctx.prisma.set.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          weight: input.newWeight,
+          repetitions: input.newRepetitions,
+        },
+      });
+      return updateSet;
+    }),
 });
